@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { LoggingService } from '../logging.service';
+import { AccountService } from '../account-service';
 
 @Component({
   selector: 'app-account',
   templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+  styleUrls: ['./account.component.css'],
+ // providers: [LoggingService ]
 })
 export class AccountComponent implements OnInit {
+  @Input() account: {name: string, status: string};
+  @Input() id: number;
 
-  constructor() { }
+  constructor(private logginService: LoggingService,
+              private accountService: AccountService) { }
 
   ngOnInit() {
+  }
+
+  onSetTo(status: string) {
+    this.accountService.updateStatus(this.id, status);
+   // this.logginService.logStatusChange(status);
+    this.accountService.statusUpdated.emit(status);
   }
 
 }
